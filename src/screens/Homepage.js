@@ -1,19 +1,72 @@
 import React, { useState } from "react";
-import { View, Text, ScrollView, StyleSheet } from "react-native";
+import { GlobalSearchBar } from "../components/globalComponent";
+import {
+  View,
+  Text,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  RefreshControl,
+  TextInput,
+  ActivityIndicator,
+  Image,
+} from "react-native";
+
+const dataLists = [
+  {
+    id: 1,
+    texts: "Lorem ipsum dolor sit ammet",
+    img: require("../../assets/chat.png"),
+  },
+  {
+    id: 2,
+    texts: "Test lorem ipsum dolor sit ammet heheheh",
+    img: require("../../assets/fb.png"),
+  },
+];
 
 export default function Homepage() {
+  const [refresh, setRefresh] = useState(false);
+
+  const pullToRefresh = () => {
+    setRefresh(true);
+
+    setTimeout(() => {
+      setRefresh(false);
+    }, 1000);
+  };
+
   return (
     <React.Fragment>
       <View style={styles.container}>
         <View style={styles.header}>
-          <Text>Some header here</Text>
-        </View>
-
-        <View style={styles.wrapper}>
           <View>
-            <Text>Main wrapper</Text>
+            <Text>Header here</Text>
+          </View>
+
+          <View>
+            <GlobalSearchBar isRound={true} bg="#ffff" />
           </View>
         </View>
+
+        <ScrollView
+          style={{ flex: 1 }}
+          refreshControl={
+            <RefreshControl refreshing={refresh} onRefresh={pullToRefresh} />
+          }
+        >
+          <View style={styles.wrapper}>
+            {dataLists.map((item) => (
+              <View>
+                <Text>{item.texts}</Text>
+                <Image source={item.img} />
+              </View>
+            ))}
+          </View>
+          <View>
+            <Text>Here we go</Text>
+          </View>
+        </ScrollView>
       </View>
     </React.Fragment>
   );
@@ -22,21 +75,19 @@ export default function Homepage() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    borderWidth: 1,    
+    borderWidth: 1,
     backgroundColor: "#0D4C92",
   },
   header: {
     marginTop: 20,
-    // flex: 2,
-    padding: 10
+    padding: 10,
   },
   wrapper: {
     flex: 1,
-    // borderWidth: 1,
-    // borderColor: 'red',
     borderRadius: 25,
-    marginTop: 100,
+    marginTop: 20,
     padding: 10,
-    backgroundColor: '#ffff'
+    backgroundColor: "#ffff",
+    minHeight: 1000,
   },
 });

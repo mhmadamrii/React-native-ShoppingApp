@@ -10,7 +10,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-// import ToastManager, { Toast } from "toastify-react-native";
+import ToastManager, { Toast } from "toastify-react-native";
 
 // assets
 import Github from "../../assets/github.png";
