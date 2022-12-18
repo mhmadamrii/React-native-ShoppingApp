@@ -9,20 +9,22 @@ import Profile from "../src/screens/Profile";
 const Tab = createBottomTabNavigator();
 
 export default function TabNavigation() {
-
-
   return (
-    <Tab.Navigator 
-    screenOptions={{
-      tabBarActiveTintColor: '#0D4C92'
-    }}
+    <Tab.Navigator
+      screenOptions={{
+        tabBarActiveTintColor: "#0D4C92",
+        tabBarStyle: {
+          marginBottom: 10,
+          paddingTop: 2
+        }
+      }}
     >
       <Tab.Screen
         name="Homepage"
         component={Homepage}
         options={{
           headerShown: false,
-          tabBarColor: '#3333cc',
+          tabBarColor: "#3333cc",
           tabBarIcon: ({ color }) => (
             <Icon name="home" color={color} size={40} />
           )
@@ -35,7 +37,7 @@ export default function TabNavigation() {
           headerShown: false,
           tabBarIcon: ({ color }) => (
             <Icon name="settings" color={color} size={40} />
-          )
+          ),
         }}
       />
       <Tab.Screen
@@ -45,7 +47,7 @@ export default function TabNavigation() {
           headerShown: false,
           tabBarIcon: ({ color }) => (
             <Icon name="payments" size={40} color={color} />
-          )
+          ),
         }}
       />
       <Tab.Screen
@@ -55,7 +57,7 @@ export default function TabNavigation() {
           headerShown: false,
           tabBarIcon: ({ color }) => (
             <Icon name="person" size={40} color={color} />
-          )
+          ),
         }}
       />
     </Tab.Navigator>

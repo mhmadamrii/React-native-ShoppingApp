@@ -30,7 +30,8 @@ export const globalImage = {
 }
 
 export const bannerHomepage = {
-  
+  banner_prommotion_1: require("../../assets/banner1.jpg"),
+  banner_prommotion_2: require("../../assets/banner2.png")
 }
 
 export const globalString = {
