@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { GlobalSearchBar } from "../components/globalComponent";
+import { dataLists, globalImage } from "../components/applicationdata";
+import { Icon } from "react-native-elements";
 import {
   View,
   Text,
@@ -11,19 +13,7 @@ import {
   ActivityIndicator,
   Image,
 } from "react-native";
-
-const dataLists = [
-  {
-    id: 1,
-    texts: "Lorem ipsum dolor sit ammet",
-    img: require("../../assets/chat.png"),
-  },
-  {
-    id: 2,
-    texts: "Test lorem ipsum dolor sit ammet heheheh",
-    img: require("../../assets/fb.png"),
-  },
-];
+import Carousel from 'react-native-reanimated-carousel';
 
 export default function Homepage() {
   const [refresh, setRefresh] = useState(false);
@@ -40,11 +30,17 @@ export default function Homepage() {
     <React.Fragment>
       <View style={styles.container}>
         <View style={styles.header}>
-          <View>
-            <Text>Header here</Text>
+          <View style={styles.innerHeader}>
+            <TouchableOpacity>
+              <Icon name="menu" color="#ffff" size={35} />
+            </TouchableOpacity>
+
+            <TouchableOpacity>
+              <Icon name="store" color="#ffff" size={35} />
+            </TouchableOpacity>
           </View>
 
-          <View>
+          <View style={{ marginTop: 10 }}>
             <GlobalSearchBar isRound={true} bg="#ffff" />
           </View>
         </View>
@@ -56,15 +52,22 @@ export default function Homepage() {
           }
         >
           <View style={styles.wrapper}>
-            {dataLists.map((item) => (
-              <View>
-                <Text>{item.texts}</Text>
-                <Image source={item.img} />
-              </View>
-            ))}
-          </View>
-          <View>
-            <Text>Here we go</Text>
+            <View style={styles.category}>
+              {dataLists.map((item, index) => (
+                <View style={styles.mappedCategory}>
+                  <Image
+                    source={item.img}
+                    key={index}
+                    style={styles.imageDataLists}
+                  />
+                  <Text style={{ textAlign: 'center', marginTop: 5 }}>{item.name}</Text>
+                </View>
+              ))}
+            </View>
+
+            <View style={styles.banner}>
+              
+            </View>
           </View>
         </ScrollView>
       </View>
@@ -82,12 +85,44 @@ const styles = StyleSheet.create({
     marginTop: 20,
     padding: 10,
   },
+  innerHeader: {
+    flexDirection: "row",
+    // borderWidth: 1,
+    // borderColor: 'red',
+    justifyContent: "space-between",
+  },
+  headerImg: {
+    width: 30,
+    height: 30,
+  },
   wrapper: {
     flex: 1,
     borderRadius: 25,
     marginTop: 20,
     padding: 10,
-    backgroundColor: "#ffff",
+    backgroundColor: "#EFF5F5",
     minHeight: 1000,
   },
+  category: {
+    // borderWidth: 1,
+    // borderColor: "red",
+    justifyContent: "space-evenly",
+    flexDirection: "row",
+    padding: 10,
+    backgroundColor: "#ffff",
+    borderRadius: 10,
+  },
+  imageDataLists: {
+    width: 50,
+    height: 50,
+  },
+  mappedCategory: {
+    // borderWidth: 1,
+    // borderColor: 'red',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  banner: {
+
+  }
 });
