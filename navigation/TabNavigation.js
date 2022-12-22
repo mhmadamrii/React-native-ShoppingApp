@@ -4,6 +4,8 @@ import { Icon } from "react-native-elements";
 
 // tab screens
 import Homepage from "../src/screens/Homepage";
+import Setting from "../src/screens/Settings";
+import Payment from "../src/screens/Payments";
 import Profile from "../src/screens/Profile";
 
 const Tab = createBottomTabNavigator();
@@ -32,7 +34,7 @@ export default function TabNavigation() {
       />
       <Tab.Screen
         name="Setting"
-        component={Homepage}
+        component={Setting}
         options={{
           headerShown: false,
           tabBarIcon: ({ color }) => (
@@ -42,7 +44,7 @@ export default function TabNavigation() {
       />
       <Tab.Screen
         name="Payments"
-        component={Homepage}
+        component={Payment}
         options={{
           headerShown: false,
           tabBarIcon: ({ color }) => (

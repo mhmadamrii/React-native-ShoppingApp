@@ -15,7 +15,15 @@ export const GlobalSearchBar = (props) => {
           backgroundColor: bg ? bg : "black",
         }}
       >
-        <TextInput style={{ justifyContent: 'center', alignItems: 'center', padding: 10, fontSize: 17 }} placeholder="Search here" />
+        <TextInput
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            padding: 10,
+            fontSize: 17,
+          }}
+          placeholder="Search here"
+        />
       </View>
     </React.Fragment>
   );
@@ -129,16 +137,49 @@ export const ProductsSkeleton = () => {
   );
 };
 
+export const ProductListSkeleton = () => {
+  return (
+    <View style={styles.productListSkeleton}>
+      <View>
+        <Skeleton
+          animation="wave"
+          width={150}
+          height={150}
+          style={{ marginTop: 10, borderRadius: 10 }}
+        />
+        <Skeleton
+          animation="wave"
+          width={150}
+          height={10}
+          style={{ marginTop: 10 }}
+        />
+      </View>
+
+      <View>
+        <Skeleton
+          animation="wave"
+          width={150}
+          height={150}
+          style={{ marginTop: 10, borderRadius: 10 }}
+        />
+        <Skeleton
+          animation="wave"
+          width={150}
+          height={10}
+          style={{ marginTop: 10 }}
+        />
+      </View>
+    </View>
+  );
+};
+
 export const BannerSkeleton = () => {
   return (
     <View style={styles.bannerSkeleton}>
-      <Skeleton 
-        animation="wave"
-        style={styles.bodySkeletonLarge}
-      />
+      <Skeleton animation="wave" style={styles.bodySkeletonLarge} />
     </View>
-  )
-}
+  );
+};
 
 export default class globalComponent extends Component {
   constructor() {
@@ -182,11 +223,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  bannerSkeleton: {
-
-  },
+  bannerSkeleton: {},
   bodySkeletonLarge: {
     borderRadius: 10,
-    height: 140
-  }
+    height: 140,
+  },
+  productListSkeleton: {
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 10,
+    minHeight: 190,
+    flexDirection: "row",
+  },
 });

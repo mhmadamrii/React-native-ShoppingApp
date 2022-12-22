@@ -10,6 +10,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { globalString as strings } from "../components/applicationdata";
 import ToastManager, { Toast } from "toastify-react-native";
 
 // assets
@@ -41,18 +42,18 @@ const Login = () => {
     <View style={styles.container}>
       <View style={styles.headerLogin}>
         <Text style={{ fontSize: 25, fontWeight: "bold", textAlign: "center" }}>
-          Sign In
+          {strings.sign_in}
         </Text>
       </View>
 
       <View style={styles.mainLogin}>
         <TextInput
-          placeholder="Email Adress"
+          placeholder={strings.email_address}
           style={styles.mainInput}
           onChangeText={(value) => setEmail(value)}
         />
         <TextInput
-          placeholder="Password"
+          placeholder={strings.password}
           style={styles.mainInput}
           onChangeText={(value) => setPassword(value)}
         />
@@ -66,7 +67,7 @@ const Login = () => {
               "Sign In"
             )}
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity>        
       </View>
     </View>
   );

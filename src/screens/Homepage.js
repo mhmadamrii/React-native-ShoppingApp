@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BannerSkeleton, GlobalSearchBar } from "../components/globalComponent";
-import {
-  dataLists,
-  globalImage,
-  bannerHomepage,
-} from "../components/applicationdata";
+import Carousel from "simple-carousel-react-native";
 import { Button, Icon } from "react-native-elements";
 import {
   View,
@@ -17,7 +12,20 @@ import {
   ActivityIndicator,
   Image,
 } from "react-native";
-import Carousel from "simple-carousel-react-native";
+
+// custom required stacks
+import {
+  BannerSkeleton,
+  GlobalSearchBar,
+  ProductListSkeleton,
+} from "../components/globalComponent";
+import {
+  dataLists,
+  globalImage,
+  bannerHomepage,
+  fakeSpecialDials,
+  globalString as strings,
+} from "../components/applicationdata";
 import {
   HeaderSkeleton,
   BodySkeletor,
@@ -26,6 +34,9 @@ import {
 
 export default function Homepage() {
   const [refresh, setRefresh] = useState(false);
+  const [isExistSpecialDial, setIsExistSpecialDial] = useState(false);
+  const url = 'https://api.unsplash.com/photos/?client_id=lQ5Ib8aUGI3QUQry_JQzCoPG7-laOZzi6SQ7Cy8Wk5k'
+
 
   const pullToRefresh = () => {
     setRefresh(true);
@@ -35,14 +46,15 @@ export default function Homepage() {
     }, 1000);
   };
 
-  // setInterval(() => {
-  //   pullToRefresh()
-  // }, 10000)
-
-  // const scrolll = () => {
-  //   window.scrollTo(400, 0)
-  //   alert("Hello")
-  // }
+  const handleFetch = async () => {
+    try {
+      const response = await fetch(url)
+      const json = await response.json()
+      console.log(json)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return (
     <React.Fragment>
@@ -70,17 +82,20 @@ export default function Homepage() {
           }
         >
           <View style={styles.wrapper}>
+            {/* category product */}
             {refresh ? (
               <HeaderSkeleton />
             ) : (
               <View style={styles.category}>
                 {dataLists.map((item, index) => (
                   <View style={styles.mappedCategory} key={item.id}>
-                    <Image
-                      source={item.img}
-                      key={index}
-                      style={styles.imageDataLists}
-                    />
+                    <TouchableOpacity>
+                      <Image
+                        source={item.img}
+                        key={index}
+                        style={styles.imageDataLists}
+                      />
+                    </TouchableOpacity>
                     <Text style={{ textAlign: "center", marginTop: 5 }}>
                       {item.name}
                     </Text>
@@ -89,6 +104,7 @@ export default function Homepage() {
               </View>
             )}
 
+            {/* banner */}
             {refresh ? (
               <BannerSkeleton />
             ) : (
@@ -112,6 +128,36 @@ export default function Homepage() {
               </View>
             )}
 
+            {/* special dials */}
+            {refresh ? (
+              <ProductListSkeleton />
+            ) : (
+              <View>
+                <View style={styles.specialDials}>
+                  {fakeSpecialDials.map((item) => (
+                    <View key={item.id}>
+                      {item.complete && (
+                        <View style={styles.specialDialsMain}>
+                          <Image
+                            source={item.img}
+                            style={styles.specialDialsImg}
+                          />
+                          <TouchableOpacity style={{ marginTop: 5 }}>
+                            <Button
+                              title={strings.check_out}
+                              style={{ width: 165 }}
+                            />
+                          </TouchableOpacity>
+                        </View>
+                      )}
+                    </View>
+                  ))}
+                </View>
+              </View>
+            )}
+
+            <Button title="fetch here" onPress={handleFetch} />
+
             {refresh ? <View></View> : <View></View>}
           </View>
         </ScrollView>
@@ -126,7 +172,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#0D4C92",
   },
   header: {
-    marginTop: 20,
+    marginTop: 25,
     padding: 10,
   },
   innerHeader: {
@@ -144,7 +190,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     marginTop: 20,
     padding: 10,
-    backgroundColor: "#EFF5F5",
+    backgroundColor: "#D6E4E5",
     minHeight: 1000,
   },
   category: {
@@ -184,5 +230,23 @@ const styles = StyleSheet.create({
   carouselCore: {
     justifyContent: "center",
     alignItems: "center",
+  },
+  specialDials: {
+    marginTop: 10,
+    padding: 5,
+    backgroundColor: "#ffff",
+    justifyContent: "space-between",
+    flexDirection: "row",
+    borderRadius: 10,
+  },
+  specialDialsMain: {
+    backgroundColor: "#D6E4E5",
+    width: 165,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  specialDialsImg: {
+    width: 150,
+    height: 150,
   },
 });
