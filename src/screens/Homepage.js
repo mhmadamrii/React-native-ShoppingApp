@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Carousel from "simple-carousel-react-native";
 import { Button, Icon } from "react-native-elements";
+import { useNavigation } from "@react-navigation/native";
 import {
   View,
   Text,
@@ -33,9 +34,9 @@ import {
 } from "../components/globalComponent";
 
 export default function Homepage() {
-  const [refresh, setRefresh] = useState(false);
-  const [isExistSpecialDial, setIsExistSpecialDial] = useState(false);
+  const [refresh, setRefresh] = useState(false);  
   const url = 'https://api.unsplash.com/photos/?client_id=lQ5Ib8aUGI3QUQry_JQzCoPG7-laOZzi6SQ7Cy8Wk5k'
+  const navigation = useNavigation();
 
 
   const pullToRefresh = () => {
@@ -54,6 +55,10 @@ export default function Homepage() {
     } catch (error) {
       console.log(error)
     }
+  };
+
+  const navigateToCart = () => {
+    navigation.navigate("Cart")
   }
 
   return (
@@ -156,7 +161,7 @@ export default function Homepage() {
               </View>
             )}
 
-            <Button title="fetch here" onPress={handleFetch} />
+            <Button title="fetch here" onPress={navigateToCart} />
 
             {refresh ? <View></View> : <View></View>}
           </View>
@@ -191,7 +196,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     padding: 10,
     backgroundColor: "#D6E4E5",
-    minHeight: 1000,
+    minHeight: 600,
   },
   category: {
     // borderWidth: 1,
@@ -233,7 +238,7 @@ const styles = StyleSheet.create({
   },
   specialDials: {
     marginTop: 10,
-    padding: 5,
+    padding: 10,
     backgroundColor: "#ffff",
     justifyContent: "space-between",
     flexDirection: "row",
@@ -244,9 +249,10 @@ const styles = StyleSheet.create({
     width: 165,
     justifyContent: "center",
     alignItems: "center",
+    borderRadius: 10
   },
   specialDialsImg: {
     width: 150,
-    height: 150,
+    height: 150,    
   },
 });
