@@ -1,58 +1,52 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
+import { View, Image, Text, ScrollView } from "react-native";
 import { Button } from "react-native-elements";
 
-export default function Setting() {
+export default function Settings() {
   const [state, setState] = useState([]);
+  const [imageState, setImage] = useState([])
 
-  const url =
-    "https://api.unsplash.com/photos/?client_id=lQ5Ib8aUGI3QUQry_JQzCoPG7-laOZzi6SQ7Cy8Wk5k";
-
+  const url = "https://fakestoreapi.com/products";
   const handleFetch = async () => {
     try {
       const response = await fetch(url);
       const json = await response.json();
+      console.log(json);
       setState(json);
     } catch (error) {
       console.log(error);
     }
   };
 
-  console.log(state);
-  return (
-    <View style={styles.container}>
-      <Button title="fetch" onPress={handleFetch} />
 
-      <ScrollView>
-        <View>
+  const handleImage = async () => {
+    try {
+      const res = await fetch("https://fakestoreapi.com/img/81XH0e8fefL._AC_UY879_.jpg")
+      const data = await res.blob()
+      setImage(URL.createObjectURL(data))
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  return (
+    <React.Fragment>
+      <View style={{ marginTop: 100 }}>
+        <Button title="Fetch" onPress={handleFetch} />
+        <Button title="Fetch Image" onPress={handleImage} />
+        <ScrollView>
           {state.map((item) => (
-            <>
-              <Text key={item.id}>{item.user.bio}</Text>              
-            </>
+            <View key={item.id}>
+              <Text>{item.title}</Text>
+              <Image source={item.image} />
+            </View>
           ))}
-          <Image
-            source={{
-              uri: "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg",
-            }}
-            style={{ width: 400, height: 400 }}
-          />
-          <Image
-            source={{
-              uri: 'https://images.unsplash.com/photo-1664575602807-e002fc20892c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzOTEzNzZ8MXwxfGFsbHwxfHx8fHx8Mnx8MTY3MTY5MDY3NA&ixlib=rb-4.0.3&q=80&w=1080',
-            }}
-            style={{ width: 400, height: 400 }}
-          />
-        </View>
-      </ScrollView>
-    </View>
+
+          {imageState ? (
+            <Image source={{ uri: imageState }} style={{ width: 200, height: 200 }} />
+          ) : <Text>empty</Text>}
+        </ScrollView>
+      </View>
+    </React.Fragment>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    borderWidth: 1,
-    borderColor: "red",
-    marginTop: 60,
-  },
-});

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Carousel from "simple-carousel-react-native";
 import { Button, Icon } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
@@ -13,6 +13,8 @@ import {
   ActivityIndicator,
   Image,
 } from "react-native";
+import { ProductContext } from "../context/ProductContext";
+import { Badge } from "react-native-paper";
 
 // custom required stacks
 import {
@@ -34,10 +36,12 @@ import {
 } from "../components/globalComponent";
 
 export default function Homepage() {
-  const [refresh, setRefresh] = useState(false);  
-  const url = 'https://api.unsplash.com/photos/?client_id=lQ5Ib8aUGI3QUQry_JQzCoPG7-laOZzi6SQ7Cy8Wk5k'
+  const [refresh, setRefresh] = useState(false);
+  const [productItem, setProductItem] = useContext(ProductContext);
+  console.log(typeof productItem);
+  const url =
+    "https://fakestoreapi.com/products";
   const navigation = useNavigation();
-
 
   const pullToRefresh = () => {
     setRefresh(true);
@@ -49,25 +53,26 @@ export default function Homepage() {
 
   const handleFetch = async () => {
     try {
-      const response = await fetch(url)
-      const json = await response.json()
-      console.log(json)
+      const response = await fetch(url);
+      const json = await response.json();
+      console.log(json);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
 
   const navigateToCart = () => {
-    navigation.navigate("Cart")
-  }
+    navigation.navigate("Cart");
+  };
 
   return (
     <React.Fragment>
       <View style={styles.container}>
         <View style={styles.header}>
           <View style={styles.innerHeader}>
-            <TouchableOpacity>
-              <Icon name="store" color="#ffff" size={35} />
+            <TouchableOpacity onPress={navigateToCart}>
+              <Badge style={{ zIndex: 5, marginBottom: -20 }}>{productItem.length}</Badge>
+              <Icon name="shopping-cart" color="#ffff" size={35} />
             </TouchableOpacity>
 
             <TouchableOpacity>
@@ -137,9 +142,12 @@ export default function Homepage() {
             {refresh ? (
               <ProductListSkeleton />
             ) : (
-              <View>
+              <View style={styles.specials}>
+                <Text style={{ marginTop: 5, marginLeft: 10 }}>
+                  {strings.special_dials}
+                </Text>
                 <View style={styles.specialDials}>
-                  {fakeSpecialDials.map((item) => (
+                  {productItem.map((item) => (
                     <View key={item.id}>
                       {item.complete && (
                         <View style={styles.specialDialsMain}>
@@ -149,7 +157,7 @@ export default function Homepage() {
                           />
                           <TouchableOpacity style={{ marginTop: 5 }}>
                             <Button
-                              title={strings.check_out}
+                              title={strings.add_to_cart}
                               style={{ width: 165 }}
                             />
                           </TouchableOpacity>
@@ -161,7 +169,7 @@ export default function Homepage() {
               </View>
             )}
 
-            <Button title="fetch here" onPress={navigateToCart} />
+            <Button title="fetch here" onPress={handleFetch} />
 
             {refresh ? <View></View> : <View></View>}
           </View>
@@ -236,8 +244,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  specialDials: {
+  specials: {
     marginTop: 10,
+    backgroundColor: "#ffff",
+    borderRadius: 10,
+  },
+  specialDials: {
     padding: 10,
     backgroundColor: "#ffff",
     justifyContent: "space-between",
@@ -249,10 +261,10 @@ const styles = StyleSheet.create({
     width: 165,
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 10
+    borderRadius: 10,
   },
   specialDialsImg: {
     width: 150,
-    height: 150,    
+    height: 150,
   },
 });

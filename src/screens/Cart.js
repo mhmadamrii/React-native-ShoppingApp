@@ -12,11 +12,7 @@ export default function Cart() {
             <Text>LIST PRODUCTS</Text>
           </View>
 
-          <View style={styles.bottomShowButton}>
-            <View style={styles.bottomButton}>
-              <Button title={strings.check_out} />
-            </View>
-          </View>
+          
         </View>
       </ScrollView>
     </View>

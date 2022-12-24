@@ -57,6 +57,10 @@ export const globalString = {
   wardrobe: "Wardrobe",
   electronics: "Electronics",
   stuffs: "Stuffs",
-  check_out: "Check Out"
+  check_out: "Check Out",
+  add_to_cart: "Add to cart",
+  remove_from_cart: "Remove from cart",
+  remove: "Remove",
+  special_dials: "Speial Dials"
 };
 export const name = "Hello";
