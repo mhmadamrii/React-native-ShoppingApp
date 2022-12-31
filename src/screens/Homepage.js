@@ -38,9 +38,9 @@ import {
 export default function Homepage() {
   const [refresh, setRefresh] = useState(false);
   const [productItem, setProductItem] = useContext(ProductContext);
+  const [productImage, setProductImage] = useState([]);
   console.log(typeof productItem);
-  const url =
-    "https://fakestoreapi.com/products";
+  const url = "https://fakestoreapi.com/products?limit=4";
   const navigation = useNavigation();
 
   const pullToRefresh = () => {
@@ -55,23 +55,30 @@ export default function Homepage() {
     try {
       const response = await fetch(url);
       const json = await response.json();
-      console.log(json);
+      setProductImage(json);
     } catch (error) {
       console.log(error);
     }
   };
 
+  console.log("productImage thissss", productImage.length);
+
   const navigateToCart = () => {
     navigation.navigate("Cart");
   };
 
+  useEffect(() => {
+    handleFetch()
+  }, [])
   return (
     <React.Fragment>
       <View style={styles.container}>
         <View style={styles.header}>
           <View style={styles.innerHeader}>
             <TouchableOpacity onPress={navigateToCart}>
-              <Badge style={{ zIndex: 5, marginBottom: -20 }}>{productItem.length}</Badge>
+              <Badge style={{ zIndex: 5, marginBottom: -20 }}>
+                {productItem.length}
+              </Badge>
               <Icon name="shopping-cart" color="#ffff" size={35} />
             </TouchableOpacity>
 
@@ -144,32 +151,23 @@ export default function Homepage() {
             ) : (
               <View style={styles.specials}>
                 <Text style={{ marginTop: 5, marginLeft: 10 }}>
-                  {strings.special_dials}
+                  {strings.special_dials} ({productImage.length})
                 </Text>
                 <View style={styles.specialDials}>
-                  {productItem.map((item) => (
-                    <View key={item.id}>
-                      {item.complete && (
-                        <View style={styles.specialDialsMain}>
-                          <Image
-                            source={item.img}
-                            style={styles.specialDialsImg}
-                          />
-                          <TouchableOpacity style={{ marginTop: 5 }}>
-                            <Button
-                              title={strings.add_to_cart}
-                              style={{ width: 165 }}
-                            />
-                          </TouchableOpacity>
-                        </View>
-                      )}
+                  {productImage.map((item) => (
+                    <View key={item.id} style={styles.wrapperSpecial}>
+                      <View>
+                        <Image
+                          source={{ uri: item.image }}
+                          style={{ width: 40, height: 60 }}
+                        />
+                        <Button title={strings.add_to_cart} />
+                      </View>
                     </View>
                   ))}
                 </View>
               </View>
             )}
-
-            <Button title="fetch here" onPress={handleFetch} />
 
             {refresh ? <View></View> : <View></View>}
           </View>
@@ -229,7 +227,7 @@ const styles = StyleSheet.create({
     height: 150,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 20,
+    marginTop: 10,
     padding: 10,
     // borderWidth: 1,
     // borderColor: 'red',
@@ -254,17 +252,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffff",
     justifyContent: "space-between",
     flexDirection: "row",
+    flexWrap: "wrap",
     borderRadius: 10,
   },
-  specialDialsMain: {
-    backgroundColor: "#D6E4E5",
-    width: 165,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 10,
-  },
-  specialDialsImg: {
-    width: 150,
-    height: 150,
+  wrapperSpecial: {
+    borderWidth: 1,
+    borderColor: "red",
+    width: "48%",
   },
 });
