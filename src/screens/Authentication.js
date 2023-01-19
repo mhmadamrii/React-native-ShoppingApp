@@ -181,6 +181,9 @@ export default class Authentication extends React.Component {
             style={{
               padding: 10,
               marginTop: this.state.isRegisterPage ? "55%" : "65%",
+              marginBottom: 30,
+              bottom: '5%',
+              height: 90
             }}
           >
             {!this.state.isRegisterPage && (
@@ -249,6 +252,9 @@ const styles = StyleSheet.create({
     textAlign: "center",
     borderRadius: 5,
     marginTop: 10,
+    // position: 'absolute',
+    width: '100%',
+    // marginHorizontal: 10
   },
   textNavigateRegister: {
     alignItems: "center",

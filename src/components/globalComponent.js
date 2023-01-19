@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { View, StyleSheet, Text, TextInput } from "react-native";
 import { SearchBar } from "react-native-elements";
 import { Skeleton } from "@rneui/themed";
+import { Platform } from "react-native";
 
 export const GlobalSearchBar = (props) => {
   const { isRound, bg, height } = props;
@@ -19,7 +20,7 @@ export const GlobalSearchBar = (props) => {
           style={{
             justifyContent: "center",
             alignItems: "center",
-            padding: 10,
+            padding: 3,
             fontSize: 17,
           }}
           placeholder="Search here"
@@ -213,7 +214,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   circleSkeleton: {
-    marginHorizontal: 2,
+    marginHorizontal: Platform.OS === 'android' ? 14 : 0,
   },
   productsSkeleton: {
     flexDirection: "row",

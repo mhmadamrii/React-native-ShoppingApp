@@ -17,7 +17,8 @@ export default function TabNavigation() {
         tabBarActiveTintColor: "#0D4C92",
         tabBarStyle: {
           marginBottom: 10,
-          paddingTop: 2
+          paddingTop: 2,
+          height: 60
         }
       }}
     >

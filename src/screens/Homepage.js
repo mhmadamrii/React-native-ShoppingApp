@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
-import Carousel from "simple-carousel-react-native";
 import { Button, Icon } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
+import { ProductContext } from "../context/ProductContext";
+import { Badge } from "react-native-paper";
 import {
   View,
   Text,
@@ -9,12 +10,11 @@ import {
   StyleSheet,
   TouchableOpacity,
   RefreshControl,
-  TextInput,
-  ActivityIndicator,
   Image,
+  StatusBar,
 } from "react-native";
-import { ProductContext } from "../context/ProductContext";
-import { Badge } from "react-native-paper";
+
+import Carousel from "simple-carousel-react-native";
 
 // custom required stacks
 import {
@@ -24,9 +24,7 @@ import {
 } from "../components/globalComponent";
 import {
   dataLists,
-  globalImage,
   bannerHomepage,
-  fakeSpecialDials,
   globalString as strings,
 } from "../components/applicationdata";
 import {
@@ -39,12 +37,14 @@ export default function Homepage() {
   const [refresh, setRefresh] = useState(false);
   const [productItem, setProductItem] = useContext(ProductContext);
   const [productImage, setProductImage] = useState([]);
-  console.log(typeof productItem);
-  const url = "https://fakestoreapi.com/products?limit=4";
+  const [badge, setBadge] = useState(0);
   const navigation = useNavigation();
+
+  const url = "https://fakestoreapi.com/products?limit=4";
 
   const pullToRefresh = () => {
     setRefresh(true);
+    setBadge(0)
 
     setTimeout(() => {
       setRefresh(false);
@@ -61,24 +61,25 @@ export default function Homepage() {
     }
   };
 
-  console.log("productImage thissss", productImage.length);
-
   const navigateToCart = () => {
     navigation.navigate("Cart");
   };
 
   useEffect(() => {
-    handleFetch()
-  }, [])
+    handleFetch();
+  }, []);
+
+  console.log("refresh", refresh)
+
   return (
     <React.Fragment>
       <View style={styles.container}>
         <View style={styles.header}>
           <View style={styles.innerHeader}>
             <TouchableOpacity onPress={navigateToCart}>
-              <Badge style={{ zIndex: 5, marginBottom: -20 }}>
-                {productItem.length}
-              </Badge>
+              {badge > 0 ? (
+                <Badge style={{ zIndex: 5, marginBottom: -20 }}>{badge}</Badge>
+              ) : null}
               <Icon name="shopping-cart" color="#ffff" size={35} />
             </TouchableOpacity>
 
@@ -156,12 +157,29 @@ export default function Homepage() {
                 <View style={styles.specialDials}>
                   {productImage.map((item) => (
                     <View key={item.id} style={styles.wrapperSpecial}>
-                      <View>
+                      <View
+                        style={{
+                          justifyContent: "center",
+                          alignItems: "center",
+                          height: 140,
+                          flexDirection: "column",
+                          flex: 1,
+                        }}
+                      >
                         <Image
                           source={{ uri: item.image }}
-                          style={{ width: 40, height: 60 }}
+                          style={{
+                            width: 90,
+                            height: 100,
+                            marginBottom: "20%",
+                          }}
                         />
-                        <Button title={strings.add_to_cart} />
+                        <View style={styles.btnCart}>
+                          <Button
+                            title={strings.add_to_cart}
+                            onPress={() => setBadge(badge + 1)}
+                          />
+                        </View>
                       </View>
                     </View>
                   ))}
@@ -256,8 +274,13 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   wrapperSpecial: {
-    borderWidth: 1,
-    borderColor: "red",
     width: "48%",
+    marginBottom: 10,
+    backgroundColor: "#D6E4E5",
+  },
+  btnCart: {
+    position: "absolute",
+    bottom: 0,
+    width: "100%",
   },
 });
