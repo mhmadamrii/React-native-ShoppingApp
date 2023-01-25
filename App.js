@@ -8,12 +8,17 @@ import Authentication from "./src/screens/Authentication";
 import TabNavigation from "./navigation/TabNavigation";
 import Cart from "./src/screens/Cart";
 
+
+import Product from "./src/screens/Product";
+import Detail from "./src/screens/Details";
+
+
 export default function App() {
   return (
     <ProductProvider>
       <NavigationContainer>
         <Stack.Navigator>
-          <Stack.Screen
+          {/* <Stack.Screen
             name="Auth"
             component={Authentication}
             options={{ headerShown: false }}
@@ -36,7 +41,10 @@ export default function App() {
                 color: "#ffff",
               },
             }}
-          />
+          /> */}
+
+          <Stack.Screen name="product" component={Product} />
+          <Stack.Screen name="Detail" component={Detail} options={({route}) => ({ title: route.params.id })} />
         </Stack.Navigator>
       </NavigationContainer>
     </ProductProvider>
